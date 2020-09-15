@@ -1,0 +1,16 @@
+<html>
+
+<head>
+	{% if title %}
+	<title>{{ title }} - Мікроблог</title>
+	{% else %}
+	<title>Ласкаво просимо в Мікроблог!</title>
+	{% endif %}
+</head>
+
+<div>Microblog: <a href="/index">Головна</a></div>
+<hr>
+{% block content %}{% endblock %}
+
+
+</html>
