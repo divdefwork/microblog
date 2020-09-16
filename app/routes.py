@@ -1,6 +1,7 @@
 # -*- coding=utf-8 -*-
 # !/usr/bin/env python3
 
+
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app.form import LoginForm
@@ -9,24 +10,24 @@ from app.form import LoginForm
 @app.route('/')
 @app.route('/index')
 def index():
-	user = {'username': 'Miguel'}
-	posts = [
-            {
-                'author': {'username': 'John'},
-                'body': 'Beautiful day in Portland!'
-            },
-            {
-                'author': {'username': 'Susan'},
-                'body': 'The Avengers movie was so cool!'
-            },
-            {
-                'author': {'username': 'Іпполіт'},
-                'body': 'Яка гидота ця ваша заливна риба !!'
-            }
-        ]
+    user = {'username': 'Miguel'}
+    posts = [
+        {
+            'author': {'username': 'John'},
+            'body': 'Beautiful day in Portland!'
+        },
+        {
+            'author': {'username': 'Susan'},
+            'body': 'The Avengers movie was so cool!'
+        },
+        {
+            'author': {'username': 'Іпполіт'},
+            'body': 'Яка гидота ця ваша заливна риба !!'
+        }
+    ]
 
-	return render_template('index.html', title='Головна',
-                        user=user, posts=posts)
+    return render_template('index.html', title='Головна',
+                           user=user, posts=posts)
 
 
 @app.route('/login', methods=['GET', 'POST'])
