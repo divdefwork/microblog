@@ -5,8 +5,8 @@
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
-from app import app
-from app.form import LoginForm
+from app import app, db
+from app.form import LoginForm, RegistrationForm
 from app.models import User
 
 
@@ -14,7 +14,6 @@ from app.models import User
 @app.route('/index')
 @login_required
 def index():
-    user = {'username': 'Miguel'}
     posts = [
         {
             'author': {'username': 'John'},
@@ -29,9 +28,7 @@ def index():
             'body': 'Яка гидота ця ваша заливна риба !!'
         }
     ]
-
-    return render_template('index.html', title='Головна',
-                           user=user, posts=posts)
+    return render_template('index.html', title='Головна', posts=posts)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -41,7 +38,7 @@ def login():
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.queey.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash("Неправильне ім'я користувача або пароль")
             return redirect(url_for('login'))
@@ -58,3 +55,18 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Вітаємо, тепер ви є зареєстрованим користувачем!')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Реєстрація', form=form)
