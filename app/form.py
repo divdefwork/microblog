@@ -3,8 +3,8 @@
 
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from app.models import User
 
 
@@ -35,3 +35,9 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError(
                 'Будь ласка, використовуйте іншу електронну адресу.')
+
+
+class EditProfileForm(FlaskForm):
+    username = StringField("Ім'я користувача", validators=[DataRequired()])
+    about_me = TextAreaField('Про мене', validators=[Length(min=0, max=140)])
+    submit = SubmitField('Відправити')

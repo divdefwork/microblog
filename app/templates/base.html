@@ -9,11 +9,12 @@
 </head>
 
 <div>
-	Microblog:
+	Мікроблог:
 	<a href="{{ url_for('index') }}">Головна</a>
 	{% if current_user.is_anonymous %}
 	<a href="{{ url_for('login') }}">Увійти</a>
 	{% else %}
+	<a href="{{ url_for('user', username=current_user.username) }}">Профіль</a>
 	<a href="{{ url_for('logout') }}">Вийти</a>
 	{% endif %}
 </div>
