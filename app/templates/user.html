@@ -8,8 +8,16 @@
 			<h1>Користувач: {{ user.username }}</h1>
 			{% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
 			{% if user.last_seen %}<p>Останній візит на: {{ user.last_seen }}</p>{%endif %}
+			<p>Ваших підписчиків (followers) {{ user.followers.count() }}. У вас в підписці (following)
+				{{ user.followed.count() }}.</p>
+
 			{% if user == current_user %}
 			<p><a href="{{ url_for('edit_profile') }}">Редагувати свій профіль</a></p>
+			{% elif not current_user.is_following(user) %}
+			<a href="{{ url_for('follow', username=user.username) }}">Підписатись (Follow)</a></>
+			{% else %}
+			<p><a href="{{ url_for('unfollow', username=user.username) }}">Відписатись (Unfollow)</a></p>
+
 			{% endif %}
 		</td>
 	</tr>
