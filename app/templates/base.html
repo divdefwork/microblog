@@ -11,6 +11,8 @@
 <div>
 	Мікроблог:
 	<a href="{{ url_for('index') }}">Головна</a>
+	<a href="{{ url_for('explore') }}">Explore</a>
+	
 	{% if current_user.is_anonymous %}
 	<a href="{{ url_for('login') }}">Увійти</a>
 	{% else %}
