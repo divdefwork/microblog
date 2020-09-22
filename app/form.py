@@ -60,5 +60,5 @@ class EmptyForm(FlaskForm):
 
 class PostForm(FlaskForm):
     post = TextAreaField('Напишіть що-небудь',
-                         validators=[DataRequired(), Length(min=1, max=140)])
+                         validators=[DataRequired()])
     submit = SubmitField('Надіслати')

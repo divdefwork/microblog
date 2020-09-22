@@ -124,33 +124,41 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 
-@app.route('/follow/<username>')
+@app.route('/follow/<username>', methods=['POST'])
 @login_required
 def follow(username):
-    user = User.query.filter_by(username=username).first()
-    if user is None:
-        flash(f'Користувача {username} не знайдено.')
-        return redirect(url_for('index'))
-    if user == current_user:
-        flash('Ви не можете відслідковувати себе!')
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            flash(f'Користувача {username} не знайдено.')
+            return redirect(url_for('index'))
+        if user == current_user:
+            flash('Ви не можете відслідковувати себе!')
+            return redirect(url_for('user', username=username))
+        current_user.follow(user)
+        db.session.commit()
+        flash(f'Ви стежите за {username}!')
         return redirect(url_for('user', username=username))
-    current_user.follow(user)
-    db.session.commit()
-    flash(f'Ви стежите за {username}!')
-    return redirect(url_for('user', username=username))
+    else:
+        return redirect(url_for('index'))
 
 
-@app.route('/unfollow/<username>')
+@app.route('/unfollow/<username>', methods=['POST'])
 @login_required
 def unfollow(username):
-    user = User.query.filter_by(username=username).first()
-    if user is None:
-        flash(f'Користувача {username} не знайдено.')
-        return redirect(url_for('index'))
-    if user == current_user:
-        flash('Ви не можете відписатися від себе!')
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            flash(f'Користувача {username} не знайдено.')
+            return redirect(url_for('index'))
+        if user == current_user:
+            flash('Ви не можете відписатися від себе!')
+            return redirect(url_for('user', username=username))
+        current_user.unfollow(user)
+        db.session.commit()
+        flash(f'Ви не стежите за {username}.')
         return redirect(url_for('user', username=username))
-    current_user.unfollow(user)
-    db.session.commit()
-    flash(f'Ви не стежите за {username}.')
-    return redirect(url_for('user', username=username))
+    else:
+        return redirect(url_for('index'))
