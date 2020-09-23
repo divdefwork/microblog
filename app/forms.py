@@ -37,6 +37,19 @@ class RegistrationForm(FlaskForm):
                 'Будь ласка, використовуйте іншу електронну адресу.')
 
 
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Електронна пошта', validators=[
+                        DataRequired(), Email()])
+    submit = SubmitField('Запит на скидання пароля')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Повторіть пароль', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Запит на скидання пароля')
+
+
 class EditProfileForm(FlaskForm):
     username = StringField("Ім'я користувача", validators=[DataRequired()])
     about_me = TextAreaField('Про мене', validators=[Length(min=0, max=140)])
