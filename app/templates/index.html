@@ -20,10 +20,18 @@
 {% for post in posts %}
 {% include '_post.html' %}
 {% endfor %}
-{% if prev_url %}
-<a href="{{ prev_url }}">Новіші публікації</a>
-{% endif %}
-{% if next_url %}
-<a href="{{ next_url }}">Старіші дописи</a>
-{% endif %}
+<nav aria-label="Page navigation example">
+	<ul class="pagination">
+		<li class="page-item{% if not prev_url %} disabled{% endif %}">
+			<a class="page-link" href="{{ prev_url or '#' }}">
+				<span aria-hidden="true">&larr;</span> Новіші публікації
+			</a>
+		</li>
+		<li class="page-item{% if not next_url %} disabled{% endif %}">
+			<a class="page-link" href="{{ next_url or '#' }}">
+				Старіші публікації <span aria-hidden="true">&rarr;</span>
+			</a>
+		</li>
+	</ul>
+</nav>
 {% endblock %}
