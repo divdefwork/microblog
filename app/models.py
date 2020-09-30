@@ -4,11 +4,11 @@
 from datetime import datetime
 from hashlib import md5
 from time import time
-from app import db, login
+from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-from app import app
+from app import db, login
 
 
 followers = db.Table(
@@ -43,9 +43,8 @@ class User(UserMixin, db.Model):
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
-            digest, size)
-    
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
+
     def follow(self, user):
         if not self.is_following(user):
             self.followed.append(user)
@@ -55,7 +54,8 @@ class User(UserMixin, db.Model):
             self.followed.remove(user)
 
     def is_following(self, user):
-        return self.followed.filter(followers.c.followed_id == user.id).count() > 0
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
 
     def followed_posts(self):
         followed = Post.query.join(
@@ -92,5 +92,3 @@ class Post(db.Model):
 
     def __repr__(self):
         return f'<Post {self.body}>'
-
-

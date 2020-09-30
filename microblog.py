@@ -1,8 +1,11 @@
 # -*- coding=utf-8 -*-
 # !/usr/bin/env python3
 
-from app import app, db
+from app import create_app, db
 from app.models import User, Post
+
+
+app = create_app()
 
 
 @app.shell_context_processor

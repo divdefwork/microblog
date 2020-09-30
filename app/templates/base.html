@@ -65,8 +65,10 @@
         {% block content %}{% endblock %}
     </div>
 
-    {{ moment.include_jquery() }}
-    {{ moment.include_moment() }}
+    <head>
+        {{ moment.include_jquery() }}
+        {{ moment.include_moment() }}
+    </head>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
