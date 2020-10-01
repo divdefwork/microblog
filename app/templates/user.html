@@ -2,7 +2,7 @@
 
 {% block content %}
 <table class="table table-hover">
-	<tr valign="top">
+	<tr>
 		<td width="256px"><img src="{{ user.avatar(256) }}"></td>
 		<td>
 			<h1>Користувач: {{ user.username }}</h1>
@@ -12,11 +12,11 @@
 				{{ user.followed.count() }}.</p>
 
 			{% if user == current_user %}
-			<p><a href="{{ url_for('edit_profile') }}">Редагувати свій профіль</a></p>
+			<p><a href="{{ url_for('main.edit_profile') }}">Редагувати свій профіль</a></p>
 			{% elif not current_user.is_following(user) %}
-			<p><a href="{{ url_for('follow', username=user.username) }}">Підписатись (Follow)</a></p>
+			<p><a href="{{ url_for('main.follow', username=user.username) }}">Підписатись (Follow)</a></p>
 			{% else %}
-			<p><a href="{{ url_for('unfollow', username=user.username) }}">Відписатись (Unfollow)</a></p>
+			<p><a href="{{ url_for('main.unfollow', username=user.username) }}">Відписатись (Unfollow)</a></p>
 			{% endif %}
 		</td>
 	</tr>
